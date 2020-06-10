@@ -1,0 +1,36 @@
+// You need to modify the script according to the number of speakers and evaluators and also if you are having voting 
+// for table topics or not. 
+
+
+
+function resultcalculator(){
+  
+  var result = [];
+
+  var sourceSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Form Responses 1");
+  var lastSourceRow = sourceSheet.getLastRow();
+  var lastSourceCol = sourceSheet.getLastColumn();  
+  var sourceData = sourceSheet.getRange(2, 4, lastSourceRow , lastSourceCol-3).getValues();
+
+ 
+  var sum =0
+  var speaker = 1
+
+    for(i=0;i<lastSourceCol-5;i++){
+      if((i+1)%5==0){
+        Logger.log('Speaker',speaker,':',sum)
+        result.push(['Speaker'+speaker.toString(),sum])
+        sum =0
+        speaker = speaker + 1
+        continue
+      } 
+      for(j=0;j<lastSourceRow-1;j++){
+        if(sourceData[j][i]==''){continue}
+        sum=sum+sourceData[j][i]
+        //Logger.log(sourceData[j][i])
+          }
+    }
+  
+  sourceSheet.getRange(lastSourceRow+1, 1, result.length, result[0].length).setValues(result);
+
+}
